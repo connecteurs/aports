@@ -3,9 +3,12 @@ stages:
 
 build-apk:
   stage: build
-  image: registry.gitlab.com/les-connecteurs/docker/alpine-buildrepo
-  entrypoint: [""]
+  image:
+    name: registry.gitlab.com/les-connecteurs/docker/alpine-buildrepo
+    entrypoint: [""]
   script:
     - mv "$CI_PROJECT_DIR" /home/builder/aports
     - ./entrypoint.sh main
     - ls packages
+  only:
+    - master
