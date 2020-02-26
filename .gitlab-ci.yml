@@ -1,8 +1,8 @@
 stages:
-  - build
+  - deploy
 
 pages:
-  stage: build
+  stage: deploy
   image:
     name: registry.gitlab.com/les-connecteurs/docker/alpine-buildrepo
     entrypoint: [""]
@@ -13,7 +13,8 @@ pages:
     - sudo -u builder ./entrypoint.sh main
     - chmod +x aports/directory_index.sh
     - aports/directory_index.sh packages
-    - mv packages "$CI_PROJECT_DIR/public"
+    - mkdir -p "$CI_PROJECT_DIR/public"
+    - mv packages/* "$CI_PROJECT_DIR/public/"
   artifacts:
     paths:
       - public
