@@ -53,6 +53,7 @@ EOF
 generate_footer() {
   cat - <<EOF
   </ul>
+  <footer>Generated at: $(date -u '+%F %H:%M:%S (UTC)')</footer>
 </body>
 </html>
 EOF
@@ -60,6 +61,7 @@ EOF
 
 # $1: directory path
 generate_index() {
+  index_file_temp="$1/.index.html"
   index_file="$1/index.html"
   directory_name=$(basename "$1")
   if [ -f "$index_file" ]; then
@@ -71,7 +73,8 @@ generate_index() {
       list_directories "$1"
       list_files "$1"
       generate_footer
-    ) > "$index_file"
+    ) > "$index_file_temp"
+    mv "$index_file_temp" "$index_file"
   fi
 }
 
