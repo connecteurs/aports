@@ -8,7 +8,8 @@ build-apk:
     entrypoint: [""]
   script:
     - cd /home/builder
-    - cp -r --no-preserve=mode,ownership "$CI_PROJECT_DIR" aports
+    - sudo cp -r "$CI_PROJECT_DIR" aports
+    - sudo chown -R builder:builder aports
     - ./entrypoint.sh main
     - ls packages
   only:
