@@ -11,7 +11,7 @@ list_directories() {
   find "$1" -type d -maxdepth 1 -not -path '*/\.*' -not -path "$1" | sort | \
   while IFS='' read -r directory_path; do
     directory_name=$(basename "$directory_path")
-    echo "    <li><a href=\"$directory_name\">$directory_name</a></li>"
+    echo "    <li><a href=\"$directory_name/\">$directory_name/</a></li>"
   done
 }
 
@@ -62,13 +62,17 @@ EOF
 generate_index() {
   index_file="$1/index.html"
   directory_name=$(basename "$1")
-  echo "  - generating index for: $directory_name ($index_file)"
-  (
-    generate_header "$directory_name"
-    list_directories "$1"
-    list_files "$1"
-    generate_footer
-  ) > index_file
+  if [ -f "$index_file" ]; then
+    echo "  - not generating index file '$index_file', because it already exists"
+  else
+    echo "  - generating index for: $directory_name ($index_file)"
+    (
+      generate_header "$directory_name"
+      list_directories "$1"
+      list_files "$1"
+      generate_footer
+    ) > "$index_file"
+  fi
 }
 
 echo "Generating indexes…"
