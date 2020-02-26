@@ -11,7 +11,7 @@ build-apk:
     - sudo cp -r "$CI_PROJECT_DIR" aports
     - sudo chown -R builder:builder aports
     - sudo -u builder ./entrypoint.sh main
-    - chmod +x aport/directory_index.sh
-    - aport/directory_index.sh packages
+    - chmod +x aports/directory_index.sh
+    - aports/directory_index.sh packages
   only:
     - master
