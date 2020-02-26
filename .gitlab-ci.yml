@@ -7,7 +7,8 @@ build-apk:
     name: registry.gitlab.com/les-connecteurs/docker/alpine-buildrepo
     entrypoint: [""]
   script:
-    - mv "$CI_PROJECT_DIR" /home/builder/aports
+    - cd /home/builder
+    - cp -r --no-preserve=mode,ownership "$CI_PROJECT_DIR" aports
     - ./entrypoint.sh main
     - ls packages
   only:
