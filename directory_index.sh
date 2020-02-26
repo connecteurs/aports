@@ -4,7 +4,11 @@ set -eu
 
 # configuration
 default_title="Directory index"
-start_dir="."
+if [ "$#" -ge 1 ]; then
+  start_dir="$1"
+else
+  start_dir="."
+fi
 
 # $1: directory where to search directories
 list_directories() {
