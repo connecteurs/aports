@@ -1,7 +1,7 @@
 stages:
   - build
 
-build-apk:
+pages:
   stage: build
   image:
     name: registry.gitlab.com/les-connecteurs/docker/alpine-buildrepo
@@ -13,5 +13,9 @@ build-apk:
     - sudo -u builder ./entrypoint.sh main
     - chmod +x aports/directory_index.sh
     - aports/directory_index.sh packages
+    - mv packages "$CI_PROJECT_DIR/public"
+  artifacts:
+    paths:
+      - public
   only:
     - master
