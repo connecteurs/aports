@@ -114,10 +114,10 @@ generate_index() {
     echo "  - generating index for: $directory_name ($index_file)"
     (
       generate_header "$directory_name"
-      list_directories "$1"
       if [ "$1" != "$start_dir" ]; then
         echo "    <li><a href=\"../\">❮ Parent directory</a></li>"
       fi
+      list_directories "$1"
       list_files "$1"
       generate_footer
     ) > "$index_file_temp"
