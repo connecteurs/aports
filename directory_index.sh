@@ -45,6 +45,46 @@ generate_header() {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>$current_title_prefix$current_title</title>
+  <style>
+  body {
+    margin: 0;
+    font-size: 16px;
+    font-family: sans-serif;
+  }
+  header {
+    font-weight: bold;
+    text-align: center;
+    background-color: #523D46;
+    color: #fff;
+    padding: 50px 10px;
+  }
+  h1, ul, footer {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li > a {
+    padding: 20px 40px;
+    border-bottom: 1px dashed #ddd;
+    display: block;
+    color: #000;
+    text-decoration: none;
+  }
+  li > a:hover {
+    background-color: #eee;
+  }
+  footer {
+    margin-top: 20px;
+    padding: 20px;
+  }
+  </style>
 </head>
 <body>
   <header>
@@ -57,7 +97,7 @@ EOF
 generate_footer() {
   cat - <<EOF
   </ul>
-  <footer>Generated at: $(date -u '+%F %H:%M:%S (UTC)')</footer>
+  <footer>Index generated at: $(date -u '+%F %H:%M:%S (UTC)')</footer>
 </body>
 </html>
 EOF
