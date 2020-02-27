@@ -7,6 +7,7 @@ pages:
     name: registry.gitlab.com/les-connecteurs/docker/alpine-buildrepo
     entrypoint: [""]
   script:
+    - export PRIVKEY="$PRIVKEY"
     - cd /home/builder
     - sudo cp -r "$CI_PROJECT_DIR" aports
     - sudo chown -R builder:builder aports
