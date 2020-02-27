@@ -11,8 +11,7 @@ pages:
     - sudo cp -r "$CI_PROJECT_DIR" aports
     - sudo chown -R builder:builder aports
     - sudo -u builder ./entrypoint.sh main
-    - chmod +x aports/directory_index.sh
-    - aports/directory_index.sh packages
+    - directory_index packages
     - mkdir -p "$CI_PROJECT_DIR/public"
     - mv packages/* "$CI_PROJECT_DIR/public/"
   artifacts:
