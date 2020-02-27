@@ -9,39 +9,39 @@ arch="all"
 license="custom"
 options="!check"  # No test suite.
 subpackages="
-	$pkgname-dev
-	$pkgname-doc
-	$pkgname-openrc
-	libsasl
-	$pkgname-gssapiv2:_plugin
-	$pkgname-gs2:_plugin
-	$pkgname-scram:_plugin
-	$pkgname-ntlm:_plugin
-	$pkgname-crammd5:_plugin
-	$pkgname-digestmd5:_plugin
-	$pkgname-plain:_plugin
-	$pkgname-login:_plugin
-	"
+  $pkgname-dev
+  $pkgname-doc
+  $pkgname-openrc
+  libsasl
+  $pkgname-gssapiv2:_plugin
+  $pkgname-gs2:_plugin
+  $pkgname-scram:_plugin
+  $pkgname-ntlm:_plugin
+  $pkgname-crammd5:_plugin
+  $pkgname-digestmd5:_plugin
+  $pkgname-plain:_plugin
+  $pkgname-login:_plugin
+  "
 # use heimdal to avoid circular dep: cyrus-sasl -> krb5 -> openldap -> cyrus-sasl
 makedepends="
-	db-dev
-	openssl-dev
-	heimdal-dev
-	py3-sphinx
+  db-dev
+  openssl-dev
+  heimdal-dev
+  py3-sphinx
 
-	automake
-	autoconf
-	libtool
-	"
+  automake
+  autoconf
+  libtool
+  "
 source="https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-$pkgver/cyrus-sasl-$pkgver.tar.gz
-	cyrus-sasl-2.1.27-as_needed.patch
-	cyrus-sasl-2.1.27-autotools_fixes.patch
-	cyrus-sasl-2.1.27-avoid_pic_overwrite.patch
-	cyrus-sasl-2.1.27-doc_build_fix.patch
-	cyrus-sasl-2.1.27-gss_c_nt_hostbased_service.patch
-	CVE-2019-19906.patch
-	saslauthd.initd
-	"
+  cyrus-sasl-2.1.27-as_needed.patch
+  cyrus-sasl-2.1.27-autotools_fixes.patch
+  cyrus-sasl-2.1.27-avoid_pic_overwrite.patch
+  cyrus-sasl-2.1.27-doc_build_fix.patch
+  cyrus-sasl-2.1.27-gss_c_nt_hostbased_service.patch
+  CVE-2019-19906.patch
+  saslauthd.initd
+  "
 
 # secfixes:
 #   2.1.27-r5:
@@ -52,72 +52,73 @@ source="https://github.com/cyrusimap/cyrus-sasl/releases/download/cyrus-sasl-$pk
 builddir="$srcdir"/$pkgname-$pkgver
 
 build() {
-	autoreconf -vif
-	./configure \
-		--build=$CBUILD \
-		--host=$CHOST \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--mandir=/usr/share/man \
-		--enable-static \
-		--enable-shared \
-		--disable-java \
-		--with-plugindir=/usr/lib/sasl2 \
-		--with-configdir=/etc/sasl2 \
-		--with-dbpath=/etc/sasl2/sasldb2 \
-		--disable-krb4 \
-		--with-gss_impl=heimdal \
-		--enable-gssapi \
-		--with-rc4 \
-		--with-dblib=berkeley \
-		--with-saslauthd=/run/saslauthd \
-		--without-pwcheck \
-		--with-devrandom=/dev/urandom \
-		--enable-anon \
-		--enable-cram \
-		--enable-digest \
-		--enable-ntlm \
-		--enable-plain \
-		--enable-login \
-		--enable-auth-sasldb \
-		--enable-alwaystrue \
-		--disable-otp
-	make
+  autoreconf -vif
+  ./configure \
+    --build=$CBUILD \
+    --host=$CHOST \
+    --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --mandir=/usr/share/man \
+    --enable-static \
+    --enable-shared \
+    --disable-java \
+    --with-plugindir=/usr/lib/sasl2 \
+    --with-configdir=/etc/sasl2 \
+    --with-dbpath=/etc/sasl2/sasldb2 \
+    --disable-krb4 \
+    --with-gss_impl=heimdal \
+    --enable-gssapi \
+    --with-rc4 \
+    --with-pam \
+    --with-dblib=berkeley \
+    --with-saslauthd=/run/saslauthd \
+    --without-pwcheck \
+    --with-devrandom=/dev/urandom \
+    --enable-anon \
+    --enable-cram \
+    --enable-digest \
+    --enable-ntlm \
+    --enable-plain \
+    --enable-login \
+    --enable-auth-sasldb \
+    --enable-alwaystrue \
+    --disable-otp
+  make
 }
 
 package() {
-	cd "$builddir"
-	make -j1 DESTDIR="$pkgdir" install
-	mkdir -p "$pkgdir"/etc/sasl2
-	install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
-	install -Dm755 "$srcdir"/saslauthd.initd "$pkgdir"/etc/init.d/saslauthd
+  cd "$builddir"
+  make -j1 DESTDIR="$pkgdir" install
+  mkdir -p "$pkgdir"/etc/sasl2
+  install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
+  install -Dm755 "$srcdir"/saslauthd.initd "$pkgdir"/etc/init.d/saslauthd
 }
 
 static() {
-	pkgdesc="Static libraires for $pkgname"
-	mkdir -p "$subpkgdir"/usr/lib
-	mv "$pkgdir"/usr/lib/*.a "$subpkgdir"/usr/lib/
+  pkgdesc="Static libraires for $pkgname"
+  mkdir -p "$subpkgdir"/usr/lib
+  mv "$pkgdir"/usr/lib/*.a "$subpkgdir"/usr/lib/
 }
 
 _plugin() {
-	depends=
-	local plugin=${subpkgname/$pkgname-/}
-	replaces="libsasl"
-	pkgdesc="Cyrus SASL plugin for $plugin"
-	mkdir -p "$subpkgdir"/usr/lib/sasl2
-	mv "$pkgdir"/usr/lib/sasl2/lib${plugin}.so* "$subpkgdir"/usr/lib/sasl2/
+  depends=
+  local plugin=${subpkgname/$pkgname-/}
+  replaces="libsasl"
+  pkgdesc="Cyrus SASL plugin for $plugin"
+  mkdir -p "$subpkgdir"/usr/lib/sasl2
+  mv "$pkgdir"/usr/lib/sasl2/lib${plugin}.so* "$subpkgdir"/usr/lib/sasl2/
 }
 
 libsasl() {
-	depends=
-	pkgdesc="Cyrus Simple Authentication and Security Layer (SASL) library"
-	mkdir -p "$subpkgdir"/usr/lib/sasl2 "$subpkgdir"/etc/sasl2
-	local lib=
-	for lib in anonymous sasldb; do
-		mv "$pkgdir"/usr/lib/sasl2/*${lib}*.so* "$subpkgdir"/usr/lib/sasl2/
-	done
-	mv "$pkgdir"/usr/lib/libsasl*.so.* "$subpkgdir"/usr/lib/
+  depends=
+  pkgdesc="Cyrus Simple Authentication and Security Layer (SASL) library"
+  mkdir -p "$subpkgdir"/usr/lib/sasl2 "$subpkgdir"/etc/sasl2
+  local lib=
+  for lib in anonymous sasldb; do
+    mv "$pkgdir"/usr/lib/sasl2/*${lib}*.so* "$subpkgdir"/usr/lib/sasl2/
+  done
+  mv "$pkgdir"/usr/lib/libsasl*.so.* "$subpkgdir"/usr/lib/
 }
 
 sha512sums="d11549a99b3b06af79fc62d5478dba3305d7e7cc0824f4b91f0d2638daafbe940623eab235f85af9be38dcf5d42fc131db531c177040a85187aee5096b8df63b  cyrus-sasl-2.1.27.tar.gz
