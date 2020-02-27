@@ -28,6 +28,7 @@ makedepends="
   openssl-dev
   heimdal-dev
   py3-sphinx
+  linux-pam-dev
 
   automake
   autoconf
