@@ -1,0 +1,43 @@
+# Contributor: Ludovic Muller <ludovic@connecteu.rs>
+# Maintainer: Ludovic Muller <ludovic@connecteu.rs>
+pkgname=pam-pgsql
+pkgver=0.7.3.2
+pkgrel=0
+pkgdesc="PAM module to authenticate using a PostgreSQL database"
+url="https://github.com/ludovicm67/pam-pgsql/tree/multiple-passwords"
+arch="all"
+license="GPL"
+options="!check"  # No test suite.
+makedepends="
+  automake
+  autoconf
+  libtool
+
+  linux-pam-dev
+  postgresql-dev
+  libgcrypt-dev
+	bsd-compat-headers
+  "
+install=""
+subpackages="$pkgname-doc"
+source="https://github.com/ludovicm67/pam-pgsql/archive/0467425d680f56db50bb861c0fa69e57f19e9003.zip"
+
+builddir="$srcdir"/pam-pgsql-0467425d680f56db50bb861c0fa69e57f19e9003
+
+build() {
+	cd "$builddir"
+  ./autogen.sh
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		|| return 1
+	make || return 1
+}
+
+package() {
+	cd "$builddir"
+	make DESTDIR="$pkgdir" install || return 1
+}
+
+sha512sums="1c17f4f31e439bcaa527413ddc31bc4f37bdab0087e58dd0905b181b692fdbea2da0bd8e88b39ac9fdc5fd7ed54be9542051fdd7c54ba6abcabf48eca6808cbc  0467425d680f56db50bb861c0fa69e57f19e9003.zip"
