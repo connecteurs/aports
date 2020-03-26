@@ -40,4 +40,4 @@ package() {
   make DESTDIR="$pkgdir" install || return 1
 }
 
-sha512sums="abd6b8c18ddbf6de38f26a3d5cd7f2e8bdaaff487bbc988b2c9c1cb8640fb204cd7bf03e4101ab0eee8aeea24284ce82195448572871a32ffe0524ce53b0ed86  pam-pgsql-a49e856bd9b8f4bca863ccce5fd226fbaf425c65.zip"
+sha512sums="abd6b8c18ddbf6de38f26a3d5cd7f2e8bdaaff487bbc988b2c9c1cb8640fb204cd7bf03e4101ab0eee8aeea24284ce82195448572871a32ffe0524ce53b0ed86  a49e856bd9b8f4bca863ccce5fd226fbaf425c65.zip"
