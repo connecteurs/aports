@@ -1,0 +1,11 @@
+--- a/imap/xapian_wrap.cpp
++++ b/imap/xapian_wrap.cpp
+@@ -753,7 +753,7 @@
+     int r = 0;
+     double total_stemmed_docs_count = 0;
+     const std::string lang_count_prefix{XAPIAN_LANG_COUNT_KEYPREFIX "."};
+-    constexpr size_t lang_count_prefix_length = strlen(XAPIAN_LANG_COUNT_KEYPREFIX ".");
++    constexpr size_t lang_count_prefix_length = __builtin_strlen(XAPIAN_LANG_COUNT_KEYPREFIX ".");
+
+
+     try {

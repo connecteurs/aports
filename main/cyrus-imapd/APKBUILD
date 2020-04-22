@@ -1,0 +1,107 @@
+# Contributor: Ludovic Muller <ludovic@connecteu.rs>
+# Maintainer: Ludovic Muller <ludovic@connecteu.rs>
+pkgname=cyrus-imapd
+pkgver=3.2.0
+pkgversuffix=beta4
+pkgrel=1
+pkgdesc="Cyrus IMAP is an email, contacts and calendar server."
+url="https://www.cyrusimap.org/"
+arch="all"
+license="custom"
+options="!check"  # No test suite.
+subpackages="
+  $pkgname-doc
+  "
+
+makedepends="
+  clang
+  bison
+  flex
+  openssl-dev
+  jansson-dev
+  libical-dev
+  xapian-core-dev
+  cyrus-sasl-dev
+  perl-dev
+  rsync
+  sqlite-dev
+  libxml2-dev
+
+  autoconf
+  automake
+  libtool
+  "
+source="https://github.com/cyrusimap/$pkgname/releases/download/$pkgname-$pkgver-$pkgversuffix/$pkgname-$pkgver-$pkgversuffix.tar.gz
+  xapian.patch
+  "
+
+builddir="$srcdir"/$pkgname-$pkgver-$pkgversuffix
+
+build() {
+  autoreconf -vif
+  ./configure CC=clang CXX=clang++ \
+    --build=$CBUILD \
+    --host=$CHOST \
+    --prefix=/usr \
+    --includedir=/usr/include \
+    --mandir=/usr/share/man \
+    --infodir=/usr/share/info \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --disable-silent-rules \
+    --libdir=/usr/lib/$CBUILD \
+    --runstatedir=/run \
+    --disable-maintainer-mode \
+    --disable-dependency-tracking \
+    --includedir=/usr/include \
+    --datadir=/usr/share/cyrus \
+    --sharedstatedir=/usr/share/cyrus \
+    --localstatedir=/var/lib/cyrus \
+    --libexecdir=/usr/lib/cyrus/bin \
+    --bindir=/usr/lib/cyrus/bin \
+    --sbindir=/usr/lib/cyrus/bin \
+    --with-cyrus-prefix=/usr/lib/cyrus \
+    --disable-silent-rules \
+    --enable-autocreate \
+    --enable-idled \
+    --enable-nntp \
+    --enable-murder \
+    --enable-http \
+    --enable-replication \
+    --enable-xapian \
+    --enable-backup \
+    --enable-calalarmd \
+    --with-cyrus-user=cyrus \
+    --with-cyrus-group=mail \
+    --with-lock=fcntl \
+    --without-ldap \
+    --without-krb \
+    --without-krbdes \
+    --with-openssl \
+    --with-zlib \
+    --with-libcap \
+    --with-pidfile=/run/cyrus-master.pid \
+    --with-com_err= \
+    --with-syslogfacility=MAIL \
+    --with-sasl \
+    --with-perl=/usr/bin/perl \
+    --enable-jmap
+  cd perl/imap && perl Makefile.PL PREFIX=/usr && cd ../../
+  make
+}
+
+package() {
+  cd "$builddir"
+  make -j1 DESTDIR="$pkgdir" install
+  install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
+  install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/
+  install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/proc/
+  install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/socket/
+  install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/
+  install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/db/
+  install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/socket/
+}
+
+sha512sums="d71c96c27c8a474b330eb88e208cdbd12a64a45bd4ce0853514cac79295c54141ec0e60e2f710de03870e19c9d83d2000912eae7e6263e6dfac3356c593b3eaa  cyrus-imapd-3.2.0-beta4.tar.gz
+d295556ccbb21afc9b603071028618163626e79a4c5b89bc0a7bf5350e45d7aa09914366041190c03468bc6c803c380770c844912ff600fc86ca0e226609f42c  xapian.patch
+"
