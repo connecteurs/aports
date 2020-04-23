@@ -1,0 +1,12 @@
+--- a/lib/libconfig.c       2020-04-23 23:25:35.920000000 +0200
++++ b/lib/libconfig.c       2020-04-23 23:25:45.635851716 +0200
+@@ -97,8 +97,8 @@
+
+ static void assert_not_deprecated(enum imapopt opt)
+ {
++    static char errbuf[1024];
+     if (imapopts[opt].deprecated_since) {
+-        char errbuf[1024];
+         enum imapopt popt = imapopts[opt].preferred_opt;
+         if (popt != IMAPOPT_ZERO) {
+             snprintf(errbuf, sizeof(errbuf),

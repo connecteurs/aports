@@ -1,0 +1,10 @@
+--- a/lib/cyr_qsort_r.c   2020-03-11 04:10:59.000000000 +0100
++++ b/lib/cyr_qsort_r.c   2020-04-23 23:17:11.870564748 +0200
+@@ -1,6 +1,6 @@
+ #include "cyr_qsort_r.h"
+
+-#ifdef HAVE_FUNCTION_NESTING
++#ifdef XXX_HAVE_FUNCTION_NESTING
+
+ EXPORTED void cyr_qsort_r(void *base, size_t nmemb, size_t size,
+                           int (*compar)(const void *, const void *, void *),

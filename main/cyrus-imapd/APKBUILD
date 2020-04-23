@@ -14,7 +14,6 @@ subpackages="
   "
 depends="tzdata"
 makedepends="
-  clang
   bison
   flex
   openssl-dev
@@ -40,13 +39,15 @@ source="https://github.com/cyrusimap/$pkgname/releases/download/$pkgname-$pkgver
   xapian.patch
   test-command.patch
   test-musl.patch
+  nesting.patch
+  libconfig-fatal.patch
   "
 
 builddir="$srcdir"/$pkgname-$pkgver-$pkgversuffix
 
 build() {
   autoreconf -vif
-  ./configure CFLAGS="-g -O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" CC=clang CXX=clang++ \
+  ./configure CFLAGS="-g -O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" \
     --build=$CBUILD \
     --host=$CHOST \
     --prefix=/usr \
@@ -115,7 +116,10 @@ check() {
 }
 
 sha512sums="d71c96c27c8a474b330eb88e208cdbd12a64a45bd4ce0853514cac79295c54141ec0e60e2f710de03870e19c9d83d2000912eae7e6263e6dfac3356c593b3eaa  cyrus-imapd-3.2.0-beta4.tar.gz
+c4d093f65be9a8ad6d3d2717f5eca69020395391c1def32f1b02727fe19fcdf4f77fa6ab365e16f18eca1f10e59e8e3ca395a0b44094193c386ff0ed053eed4a  libconfig-fatal.patch
+520494cabd87eddf67ca000b17cb7e5fa045dda83acb76034cbe957f81d9e6a0ae663ca8127b1d4e3fe9085e0cef42f89041f4a2993a0d019dc3a309b700fc9c  nesting.patch
 cf75af55070e8f0caed4f1113eade33be0e74a41a938648ef3bf5902ecbe8c9b6c981fcfff979e0da9bed6928df296a6aec90d9ac1e2699b5c9be57a2c6e7449  test-command.patch
 668192c409d7e90c69e8aa1c22484b8a7c24b8abc56a80ea20a043af2dc80d2f8167fd0934a51566cf9a5a612a062f06c61f98c2f71721df6e45f27af5e1a6a4  test-musl.patch
 d295556ccbb21afc9b603071028618163626e79a4c5b89bc0a7bf5350e45d7aa09914366041190c03468bc6c803c380770c844912ff600fc86ca0e226609f42c  xapian.patch
+
 "
