@@ -1,0 +1,11 @@
+--- a/cunit/command.testc
++++ b/cunit/command.testc
+@@ -17,7 +17,7 @@
+     if (r == ENOENT) r = 0;
+     CU_ASSERT_EQUAL_FATAL(r, 0);
+
+-    r = run_command("/usr/bin/touch", canary, NULL);
++    r = run_command("/bin/touch", canary, NULL);
+     CU_ASSERT_EQUAL_FATAL(r, 0);
+
+     r = stat(canary, &sb);

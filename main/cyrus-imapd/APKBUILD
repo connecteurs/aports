@@ -8,11 +8,11 @@ pkgdesc="Cyrus IMAP is an email, contacts and calendar server."
 url="https://www.cyrusimap.org/"
 arch="all"
 license="custom"
-options="!check"  # No test suite.
 subpackages="
   $pkgname-doc
+  $pkgname-dev
   "
-
+depends="tzdata"
 makedepends="
   clang
   bison
@@ -22,10 +22,15 @@ makedepends="
   libical-dev
   xapian-core-dev
   cyrus-sasl-dev
+  cyrus-sasl
+  cyrus-sasl-plain
+  cyrus-sasl-digestmd5
   perl-dev
   rsync
   sqlite-dev
   libxml2-dev
+  cunit-dev
+  coreutils
 
   autoconf
   automake
@@ -33,13 +38,15 @@ makedepends="
   "
 source="https://github.com/cyrusimap/$pkgname/releases/download/$pkgname-$pkgver-$pkgversuffix/$pkgname-$pkgver-$pkgversuffix.tar.gz
   xapian.patch
+  test-command.patch
+  test-musl.patch
   "
 
 builddir="$srcdir"/$pkgname-$pkgver-$pkgversuffix
 
 build() {
   autoreconf -vif
-  ./configure CC=clang CXX=clang++ \
+  ./configure CFLAGS="-g -O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" CC=clang CXX=clang++ \
     --build=$CBUILD \
     --host=$CHOST \
     --prefix=/usr \
@@ -71,6 +78,7 @@ build() {
     --enable-xapian \
     --enable-backup \
     --enable-calalarmd \
+    --enable-unit-tests \
     --with-cyrus-user=cyrus \
     --with-cyrus-group=mail \
     --with-lock=fcntl \
@@ -102,6 +110,12 @@ package() {
   install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/socket/
 }
 
+check() {
+  make check
+}
+
 sha512sums="d71c96c27c8a474b330eb88e208cdbd12a64a45bd4ce0853514cac79295c54141ec0e60e2f710de03870e19c9d83d2000912eae7e6263e6dfac3356c593b3eaa  cyrus-imapd-3.2.0-beta4.tar.gz
+cf75af55070e8f0caed4f1113eade33be0e74a41a938648ef3bf5902ecbe8c9b6c981fcfff979e0da9bed6928df296a6aec90d9ac1e2699b5c9be57a2c6e7449  test-command.patch
+668192c409d7e90c69e8aa1c22484b8a7c24b8abc56a80ea20a043af2dc80d2f8167fd0934a51566cf9a5a612a062f06c61f98c2f71721df6e45f27af5e1a6a4  test-musl.patch
 d295556ccbb21afc9b603071028618163626e79a4c5b89bc0a7bf5350e45d7aa09914366041190c03468bc6c803c380770c844912ff600fc86ca0e226609f42c  xapian.patch
 "
