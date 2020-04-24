@@ -12,7 +12,7 @@ subpackages="
   $pkgname-doc
   $pkgname-dev
   "
-depends="tzdata"
+depends="tzdata perl"
 makedepends="
   bison
   flex
@@ -96,7 +96,11 @@ build() {
     --with-sasl \
     --with-perl=/usr/bin/perl \
     --enable-jmap
-  cd perl/imap && perl Makefile.PL PREFIX=/usr && cd ../../
+
+  cd perl/imap
+  PERL_MM_USE_DEFAULT=1 perl Makefile.PL PREFIX=/usr INSTALLDIRS=vendor || return 1
+  cd ../../
+
   make
 }
 
@@ -121,6 +125,4 @@ c4d093f65be9a8ad6d3d2717f5eca69020395391c1def32f1b02727fe19fcdf4f77fa6ab365e16f1
 520494cabd87eddf67ca000b17cb7e5fa045dda83acb76034cbe957f81d9e6a0ae663ca8127b1d4e3fe9085e0cef42f89041f4a2993a0d019dc3a309b700fc9c  nesting.patch
 cf75af55070e8f0caed4f1113eade33be0e74a41a938648ef3bf5902ecbe8c9b6c981fcfff979e0da9bed6928df296a6aec90d9ac1e2699b5c9be57a2c6e7449  test-command.patch
 668192c409d7e90c69e8aa1c22484b8a7c24b8abc56a80ea20a043af2dc80d2f8167fd0934a51566cf9a5a612a062f06c61f98c2f71721df6e45f27af5e1a6a4  test-musl.patch
-d295556ccbb21afc9b603071028618163626e79a4c5b89bc0a7bf5350e45d7aa09914366041190c03468bc6c803c380770c844912ff600fc86ca0e226609f42c  xapian.patch
-
-"
+d295556ccbb21afc9b603071028618163626e79a4c5b89bc0a7bf5350e45d7aa09914366041190c03468bc6c803c380770c844912ff600fc86ca0e226609f42c  xapian.patch"
