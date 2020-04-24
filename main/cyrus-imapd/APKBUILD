@@ -29,7 +29,6 @@ makedepends="
   sqlite-dev
   libxml2-dev
   cunit-dev
-  coreutils
 
   autoconf
   automake
