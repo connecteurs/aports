@@ -70,6 +70,7 @@ build() {
     --sbindir=/usr/lib/cyrus/bin \
     --with-cyrus-prefix=/usr/lib/cyrus \
     --disable-silent-rules \
+    --disable-pcre \
     --enable-autocreate \
     --enable-idled \
     --enable-nntp \
