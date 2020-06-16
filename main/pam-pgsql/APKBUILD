@@ -2,7 +2,8 @@
 # Maintainer: Ludovic Muller <ludovic@connecteu.rs>
 pkgname=pam-pgsql
 pkgver=0.7.3.2
-pkgrel=1
+commithash=f9fd1e1a0daf754e6764a31db5cbec6f9fc02b3d
+pkgrel=2
 pkgdesc="PAM module to authenticate using a PostgreSQL database"
 url="https://github.com/pam-pgsql/pam-pgsql"
 arch="all"
@@ -17,12 +18,12 @@ makedepends="
   postgresql-dev
   libgcrypt-dev
   bsd-compat-headers
-  "
+"
 install=""
 subpackages="$pkgname-doc"
-source="https://github.com/pam-pgsql/pam-pgsql/archive/a49e856bd9b8f4bca863ccce5fd226fbaf425c65.zip"
+source="https://github.com/pam-pgsql/pam-pgsql/archive/$commithash.zip"
 
-builddir="$srcdir"/pam-pgsql-a49e856bd9b8f4bca863ccce5fd226fbaf425c65
+builddir="$srcdir"/pam-pgsql-$commithash
 
 build() {
   cd "$builddir"
@@ -40,4 +41,6 @@ package() {
   make DESTDIR="$pkgdir" install || return 1
 }
 
-sha512sums="abd6b8c18ddbf6de38f26a3d5cd7f2e8bdaaff487bbc988b2c9c1cb8640fb204cd7bf03e4101ab0eee8aeea24284ce82195448572871a32ffe0524ce53b0ed86  a49e856bd9b8f4bca863ccce5fd226fbaf425c65.zip"
+sha512sums="
+1c1024ff6bfb46972cf3c9e38c2e8efa5601180157cb727f28363d48e10114c662f804748858056010505502e6807325e8953ea23a5efc4f057cbc1883e2e2d0  f9fd1e1a0daf754e6764a31db5cbec6f9fc02b3d.zip
+"
