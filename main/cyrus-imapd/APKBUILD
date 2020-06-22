@@ -1,8 +1,8 @@
 # Contributor: Ludovic Muller <ludovic@connecteu.rs>
 # Maintainer: Ludovic Muller <ludovic@connecteu.rs>
 pkgname=cyrus-imapd
-pkgver=3.2.1
-pkgrel=1
+pkgver=3.2.2
+pkgrel=0
 pkgdesc="Cyrus IMAP is an email, contacts and calendar server."
 url="https://www.cyrusimap.org/"
 arch="all"
@@ -118,7 +118,7 @@ check() {
 }
 
 sha512sums="
-8a4c2690fbcd064beb20affee6b074211f05f9d2fa752381eb21cf5597ff09357c781ac92162f1eed7d697a19c804560cc3ae87413d9d7b1a31b57298342a60b  cyrus-imapd-3.2.1.tar.gz
+13e50e2bbf4184539dfea2dbacc88246e8bc07387c7c3f444526520c95956b72b5da45c8e06e7700fa363b7aca2c30e2eb60ab5ab71824e79f20b12873936414  cyrus-imapd-3.2.2.tar.gz
 c4d093f65be9a8ad6d3d2717f5eca69020395391c1def32f1b02727fe19fcdf4f77fa6ab365e16f18eca1f10e59e8e3ca395a0b44094193c386ff0ed053eed4a  libconfig-fatal.patch
 520494cabd87eddf67ca000b17cb7e5fa045dda83acb76034cbe957f81d9e6a0ae663ca8127b1d4e3fe9085e0cef42f89041f4a2993a0d019dc3a309b700fc9c  nesting.patch
 cf75af55070e8f0caed4f1113eade33be0e74a41a938648ef3bf5902ecbe8c9b6c981fcfff979e0da9bed6928df296a6aec90d9ac1e2699b5c9be57a2c6e7449  test-command.patch
