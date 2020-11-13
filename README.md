@@ -13,3 +13,7 @@ docker run --rm -P -it \
   --workdir /home/builder/aports/${PACKAGE_NAME} \
   --name docker-abuild alpinelinux/docker-abuild -r
 ```
+
+## License
+
+This program is free software and is distributed under [AGPLv3+ License](./LICENSE).
