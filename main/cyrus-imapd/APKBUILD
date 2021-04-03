@@ -45,7 +45,7 @@ builddir="$srcdir"/$pkgname-$pkgver
 
 build() {
   autoreconf -vif
-  ./configure CFLAGS="-g -O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" \
+  ./configure CFLAGS="-O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" \
     --build=$CBUILD \
     --host=$CHOST \
     --prefix=/usr \
