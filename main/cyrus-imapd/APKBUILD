@@ -41,10 +41,12 @@ source="https://github.com/cyrusimap/$pkgname/releases/download/$pkgname-$pkgver
   libconfig-fatal.patch
 "
 
-builddir="$srcdir"/$pkgname-$pkgver
+prepare() {
+  default_prepare
+  autoreconf -vif
+}
 
 build() {
-  autoreconf -vif
   ./configure CFLAGS="-O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" \
     --build=$CBUILD \
     --host=$CHOST \
@@ -103,7 +105,6 @@ build() {
 }
 
 package() {
-  cd "$builddir"
   make -j1 DESTDIR="$pkgdir" install
   install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
   install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/
