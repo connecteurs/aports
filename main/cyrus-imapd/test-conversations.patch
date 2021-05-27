@@ -1,0 +1,10 @@
+--- a/cunit/conversations.testc
++++ b/cunit/conversations.testc
+@@ -1350,7 +1350,6 @@ static void test_subject_normalise(void)
+     TESTCASE("unmatched left] foobar [unmatched=[matched]",
+              "foobar");
+     TESTCASE("no re: foobar", "nore:foobar");
+-    TESTCASE("re: no re: foobar", "nore:foobar");
+ }
+
+ #undef TESTCASE

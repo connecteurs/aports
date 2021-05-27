@@ -1,15 +1,15 @@
 # Contributor: Ludovic Muller <ludovic@connecteu.rs>
 # Maintainer: Ludovic Muller <ludovic@connecteu.rs>
 pkgname=cyrus-imapd
-pkgver=3.2.6
+pkgver=3.4.1
 pkgrel=0
 pkgdesc="Cyrus IMAP is an email, contacts and calendar server."
 url="https://www.cyrusimap.org/"
 arch="all"
 license="custom"
 subpackages="
-  $pkgname-doc
-  $pkgname-dev
+  ${pkgname}-doc
+  ${pkgname}-dev
 "
 depends="tzdata perl"
 makedepends="
@@ -34,8 +34,9 @@ makedepends="
   automake
   libtool
 "
-source="https://github.com/cyrusimap/$pkgname/releases/download/$pkgname-$pkgver/$pkgname-$pkgver.tar.gz
+source="https://github.com/cyrusimap/${pkgname}/releases/download/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz
   test-command.patch
+  test-conversations.patch
   test-musl.patch
   nesting.patch
   libconfig-fatal.patch
@@ -48,8 +49,8 @@ prepare() {
 
 build() {
   ./configure CFLAGS="-O2 -fdebug-prefix-map=/=. -fstack-protector-strong -Wformat -Werror=format-security" \
-    --build=$CBUILD \
-    --host=$CHOST \
+    --build="${CBUILD}" \
+    --host="${CHOST}" \
     --prefix=/usr \
     --includedir=/usr/include \
     --mandir=/usr/share/man \
@@ -57,7 +58,7 @@ build() {
     --sysconfdir=/etc \
     --localstatedir=/var \
     --disable-silent-rules \
-    --libdir=/usr/lib/$CBUILD \
+    --libdir="/usr/lib/${CBUILD}" \
     --runstatedir=/run \
     --disable-maintainer-mode \
     --disable-dependency-tracking \
@@ -105,14 +106,14 @@ build() {
 }
 
 package() {
-  make -j1 DESTDIR="$pkgdir" install
-  install -D -m644 COPYING "$pkgdir"/usr/share/licenses/$pkgname/COPYING
-  install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/
-  install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/proc/
-  install -m 0755 -o cyrus -g mail -d "$pkgdir"/run/cyrus/socket/
-  install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/
-  install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/db/
-  install -m 0755 -o cyrus -g mail -d "$pkgdir"/var/lib/cyrus/socket/
+  make -j1 DESTDIR="${pkgdir}" install
+  install -D -m644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/COPYING"
+  install -m 0755 -o cyrus -g mail -d "${pkgdir}/run/cyrus/"
+  install -m 0755 -o cyrus -g mail -d "${pkgdir}/run/cyrus/proc/"
+  install -m 0755 -o cyrus -g mail -d "${pkgdir}/run/cyrus/socket/"
+  install -m 0755 -o cyrus -g mail -d "${pkgdir}/var/lib/cyrus/"
+  install -m 0755 -o cyrus -g mail -d "${pkgdir}/var/lib/cyrus/db/"
+  install -m 0755 -o cyrus -g mail -d "${pkgdir}/var/lib/cyrus/socket/"
 }
 
 check() {
@@ -120,9 +121,10 @@ check() {
 }
 
 sha512sums="
-b9760aac7ce6f39c183204764270867702d59d8f2afc50d4c782b5232c4ea95e79dee608e957098a49bd6473042e0ff0512929a482edd2c63e1f125cc108df36  cyrus-imapd-3.2.6.tar.gz
+9fd13e93755aca98215c1bd9c21fa3ef3a3db8b1ff48f71dd6070e614e9c68cb591b1cb411fa1319d46ab1d49ddc971f188a41cc0c9a2e2c9df0cc08299f8bfa  cyrus-imapd-3.4.1.tar.gz
 c4d093f65be9a8ad6d3d2717f5eca69020395391c1def32f1b02727fe19fcdf4f77fa6ab365e16f18eca1f10e59e8e3ca395a0b44094193c386ff0ed053eed4a  libconfig-fatal.patch
 520494cabd87eddf67ca000b17cb7e5fa045dda83acb76034cbe957f81d9e6a0ae663ca8127b1d4e3fe9085e0cef42f89041f4a2993a0d019dc3a309b700fc9c  nesting.patch
 cf75af55070e8f0caed4f1113eade33be0e74a41a938648ef3bf5902ecbe8c9b6c981fcfff979e0da9bed6928df296a6aec90d9ac1e2699b5c9be57a2c6e7449  test-command.patch
-668192c409d7e90c69e8aa1c22484b8a7c24b8abc56a80ea20a043af2dc80d2f8167fd0934a51566cf9a5a612a062f06c61f98c2f71721df6e45f27af5e1a6a4  test-musl.patch
+91f9defdea8c4bd6a5603d5fe956cdef79e231dd7ef0029935317619a3e8a5f30267be86225aba054174d35e9c96911258d3e52b4ed4581ef0f9877f3d1a318f  test-conversations.patch
+7e50bfcc35494b631e3e335c733cee7851e946738994c6bfa5c7b67dbfc7a207643fa9f4e5ed56bdcb3829bb704c4ca1de0ac407cc1ebaba21e64e1026305b17  test-musl.patch
 "

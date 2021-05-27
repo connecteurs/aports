@@ -1,36 +1,39 @@
 --- a/cunit/timeofday.c
 +++ b/cunit/timeofday.c
-@@ -186,32 +186,18 @@
+@@ -186,8 +186,6 @@ void time_restore(void)
   * Platform-specific libc interception code
   */
 
 -#if defined(__GLIBC__)
 -
+ /* XXX Annoyingly, we can't just include <config.h> in this file,
+  * XXX because for whatever reason it breaks the gettimeofday
+  * XXX replacement.  Assume we just have this flag for now, and
+@@ -198,15 +196,7 @@ void time_restore(void)
  /* call the real libc function */
  static int real_gettimeofday(struct timeval *tv, ...)
  {
 -    extern int __gettimeofday(struct timeval *, ...);
 -    return __gettimeofday(tv, NULL);
-+    return gettimeofday(tv, NULL);
- }
-
+-}
+-
 -/* provide a function to hide the libc weak alias */
--int gettimeofday(struct timeval *tv, ...)
+-EXPORTED int gettimeofday(struct timeval *tv, ...)
 -{
 -    to_timeval(transform(now()), tv);
 -    return 0;
--}
--
- time_t time(time_t *tp)
- {
-     time_t tt = to_time_t(transform(now()));
-     if (tp) *tp = tt;
++    return gettimeofday(tv, NULL);
+ }
+
+ EXPORTED time_t time(time_t *tp)
+@@ -216,10 +206,6 @@ EXPORTED time_t time(time_t *tp)
      return tt;
  }
--
+
 -#else
 -#error "Don't know how to intercept gettimeofday for this libc"
 -#endif
-
+-
 
  /*
+  * Tests - not usefully runnable, sorry.
