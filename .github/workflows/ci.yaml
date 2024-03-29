@@ -36,3 +36,12 @@ jobs:
             -v /tmp/privkey:/tmp/privkey \
             ghcr.io/connecteurs/alpine-buildrepo \
             /bin/sh -c "cd /home/builder && sudo cp -r /workspace aports && sudo chown -R builder:builder aports && sudo -u builder PRIVKEY=/tmp/privkey ./entrypoint.sh main && directory_index packages && sudo mv packages/* /workspace/public/"
+
+      - name: Configure CNAME
+        run: echo pkgs-alpine.connecteu.rs > public/CNAME
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: public
