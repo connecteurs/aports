@@ -28,6 +28,7 @@ jobs:
       - name: Run commands in the Docker image
         run: |
           docker run --rm \
+            --entrypoint="" \
             -v ${{ github.workspace }}:/workspace \
             -v /tmp/privkey:/tmp/privkey \
             ghcr.io/connecteurs/alpine-buildrepo \
