@@ -22,9 +22,13 @@ jobs:
       - name: Pull docker image
         run: docker pull ghcr.io/connecteurs/alpine-buildrepo
 
+      - name: Configure private key
+        run: echo "${{ secrets.PRIVKEY_CONTENT }}" > /tmp/privkey
+
       - name: Run commands in the Docker image
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
+            -v /tmp/privkey:/tmp/privkey \
             ghcr.io/connecteurs/alpine-buildrepo \
-            /bin/sh -c "cd /home/builder && sudo cp -r /workspace aports && sudo chown -R builder:builder aports && sudo -u builder PRIVKEY=\"$PRIVKEY\" ./entrypoint.sh main && directory_index packages && mkdir -p /workspace/public && mv packages/* /workspace/public/"
+            /bin/sh -c "cd /home/builder && sudo cp -r /workspace aports && sudo chown -R builder:builder aports && sudo -u builder PRIVKEY=/tmp/privkey ./entrypoint.sh main && directory_index packages && mkdir -p /workspace/public && mv packages/* /workspace/public/"
