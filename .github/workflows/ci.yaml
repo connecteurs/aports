@@ -2,8 +2,8 @@ name: Update custom Alpine packages
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
 
 jobs:
   docker:
