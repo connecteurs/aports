@@ -1,0 +1,38 @@
+name: Update custom Alpine packages
+
+on:
+  push:
+    # branches:
+    #   - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Pull docker image
+        run: docker pull ghcr.io/connecteurs/alpine-buildrepo
+
+      - name: Configure private key
+        run: echo "${{ secrets.PRIVKEY_CONTENT }}" > /tmp/privkey
+
+      - name: Create public directory
+        run: mkdir -p public
+
+      - name: Run commands in the Docker image
+        run: |
+          docker run --rm \
+            --entrypoint="" \
+            -v ${{ github.workspace }}:/workspace \
+            -v /tmp/privkey:/tmp/privkey \
+            ghcr.io/connecteurs/alpine-buildrepo \
+            /bin/sh -c "cd /home/builder && sudo cp -r /workspace aports && sudo chown -R builder:builder aports && sudo -u builder PRIVKEY=/tmp/privkey ./entrypoint.sh main && directory_index packages && sudo mv packages/* /workspace/public/"
