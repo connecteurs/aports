@@ -25,6 +25,9 @@ jobs:
       - name: Configure private key
         run: echo "${{ secrets.PRIVKEY_CONTENT }}" > /tmp/privkey
 
+      - name: Create public directory
+        run: mkdir -p public
+
       - name: Run commands in the Docker image
         run: |
           docker run --rm \
