@@ -37,6 +37,11 @@ jobs:
             ghcr.io/connecteurs/alpine-buildrepo \
             /bin/sh -c "cd /home/builder && sudo cp -r /workspace aports && sudo chown -R builder:builder aports && sudo -u builder PRIVKEY=/tmp/privkey ./entrypoint.sh main && directory_index packages && sudo mv packages/* /workspace/public/"
 
+      - name: Update public permissions
+        run: |
+          sudo chown -R $(whoami):$(whoami) public
+          sudo chmod -R 755 public
+
       - name: Configure CNAME
         run: echo pkgs-alpine.connecteu.rs > public/CNAME
 
