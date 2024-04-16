@@ -19,7 +19,6 @@ makedepends="
   jansson-dev
   libical-dev
   xapian-core-dev
-  cyrus-sasl-plain
   cyrus-sasl-dev
   cyrus-sasl
   cyrus-sasl-digestmd5
