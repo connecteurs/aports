@@ -4,7 +4,7 @@ Test locally if a package can build using:
 
 ```sh
 # configuration
-PACKAGE_NAME=cyrus-sasl
+PACKAGE_NAME=pam-pgsql
 REPOSITORY=main
 
 # run the build
